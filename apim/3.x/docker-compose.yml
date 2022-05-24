@@ -26,6 +26,17 @@ volumes:
   data-mongo:
 
 services:
+  echo-server:
+    image: jmalloc/echo-server
+    environment:
+      - PORT=10000
+      - LOG_HTTP_HEADERS=true
+      - LOG_HTTP_BODY=true
+    ports:
+      - "10000:10000"
+    networks:
+      - frontend
+
   mongodb:
     image: mongo:${MONGODB_VERSION:-3.6}
     container_name: gio_apim_mongodb
@@ -60,7 +71,7 @@ services:
       - storage
 
   gateway:
-    image: graviteeio/apim-gateway:${APIM_VERSION:-3}
+    image: graviteeio/apim-gateway:${APIM_VERSION:-3.15.3}
     container_name: gio_apim_gateway
     restart: always
     ports:
@@ -77,6 +88,8 @@ services:
     networks:
       - storage
       - frontend
+    volumes:
+      - "$PWD/config/gateway/gravitee.yml:/opt/graviteeio-gateway/config/gravitee.yml"
 
   management_api:
     image: graviteeio/apim-management-api:${APIM_VERSION:-3}

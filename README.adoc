@@ -1,16 +1,14 @@
-= Gravitee Dockerfiles
+How to simulate
+===
 
-ifdef::env-github[]
-image:https://f.hubspotusercontent40.net/hubfs/7600448/gravitee-github-button.jpg["Join the community forum", link="https://community.gravitee.io?utm_source=readme", height=20]
-endif::[]
+Working (directly):
 
-Hosts all Dockerfiles to build GraviteeIO images.
- 
-  * _images_ stored Dockerfile for each GraviteeIO component
-  * _platform_ docker-compose to run the whole Gravitee.io Platform
-  * _apim_ docker-compose for Gravitee.io API Management
+```
+wscat -c ws://localhost:10000/test/services/stomp/ -H "Host: localhost:10000" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg=="
+```
 
-== Documentation
+Not working (through gravitee):
 
-For Gravitee.io API Management, read documentation from https://docs.gravitee.io/apim/1.x/apim_installguide_docker_compose.html
-For Gravitee.io Access Management, read documentation from https://docs.gravitee.io/am/2.x/am_installguide_docker.html#docker_compose
+```
+wscat -c ws://localhost:8082/test/services/stomp/ -H "Host: localhost:8082" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg=="
+```
