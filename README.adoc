@@ -1,6 +1,13 @@
 How to simulate
 ===
 
+Import test-v1.json API.
+
+```
+cd apim3/3.x
+docker-compose up -d
+```
+
 Working (directly):
 
 ```

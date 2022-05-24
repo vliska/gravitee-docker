@@ -1,0 +1,96 @@
+{
+  "name": "test",
+  "crossId": "298255e5-3f07-49ef-8255-e53f0799ef39",
+  "version": "v1",
+  "description": "test",
+  "visibility": "PRIVATE",
+  "gravitee": "2.0.0",
+  "flow_mode": "DEFAULT",
+  "resources": [],
+  "properties": [],
+  "plans": [
+    {
+      "id": "005086ce-db5e-4644-9086-cedb5e764425",
+      "crossId": "05da4118-0838-49ad-9a41-18083839ada9",
+      "name": "free",
+      "description": "test",
+      "validation": "AUTO",
+      "security": "KEY_LESS",
+      "type": "API",
+      "status": "PUBLISHED",
+      "api": "b3b2cb83-9ace-4124-b2cb-839acef1243b",
+      "order": 0,
+      "characteristics": [],
+      "created_at": 1653220135035,
+      "updated_at": 1653373235366,
+      "published_at": 1653220135036,
+      "paths": {},
+      "flows": [
+        {
+          "name": "",
+          "path-operator": {
+            "path": "/",
+            "operator": "STARTS_WITH"
+          },
+          "condition": "",
+          "consumers": [],
+          "methods": [],
+          "pre": [],
+          "post": [],
+          "enabled": true
+        }
+      ],
+      "comment_required": false
+    }
+  ],
+  "id": "b3b2cb83-9ace-4124-b2cb-839acef1243b",
+  "path_mappings": [],
+  "proxy": {
+    "virtual_hosts": [
+      {
+        "path": "/test/"
+      }
+    ],
+    "strip_context_path": false,
+    "preserve_host": false,
+    "logging": {
+      "mode": "CLIENT_PROXY",
+      "content": "HEADERS_PAYLOADS",
+      "scope": "REQUEST_RESPONSE"
+    },
+    "groups": [
+      {
+        "name": "default-group",
+        "endpoints": [
+          {
+            "backup": false,
+            "inherit": true,
+            "name": "default",
+            "weight": 1,
+            "type": "http",
+            "target": "ws://echo-server:10000"
+          }
+        ],
+        "load_balancing": {
+          "type": "ROUND_ROBIN"
+        },
+        "http": {
+          "connectTimeout": 5000,
+          "idleTimeout": 60000,
+          "keepAlive": true,
+          "readTimeout": 10000,
+          "pipelining": false,
+          "maxConcurrentConnections": 100,
+          "useCompression": true,
+          "followRedirects": false
+        }
+      }
+    ]
+  },
+  "response_templates": {},
+  "primaryOwner": {
+    "id": "b5947d33-fae8-4425-947d-33fae8342511",
+    "displayName": "admin",
+    "type": "USER"
+  }
+}
