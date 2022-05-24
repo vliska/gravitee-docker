@@ -68,7 +68,7 @@
             "name": "default",
             "weight": 1,
             "type": "http",
-            "target": "ws://echo-server:10000"
+            "target": "http://echo-server:10000"
           }
         ],
         "load_balancing": {
