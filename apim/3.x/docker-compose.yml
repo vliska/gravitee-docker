@@ -28,6 +28,7 @@ volumes:
 services:
   echo-server:
     image: jmalloc/echo-server
+    container_name: echo_server
     environment:
       - PORT=10000
       - LOG_HTTP_HEADERS=true
