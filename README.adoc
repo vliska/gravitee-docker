@@ -1,7 +1,6 @@
-How to simulate
-===
+= How to simulate
 
-Import test-v1.json API.
+- Import test-v1.json API.
 
 ```
 cd apim3/3.x
@@ -14,7 +13,7 @@ In a different console, check echo-server logs:
 docker-compose logs -f echo-server
 ```
 
-Working (directly):
+== Working (directly):
 
 ```
 wscat -c ws://localhost:10000/test/services/stomp/ -H "Host: localhost:10000" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg=="
@@ -36,7 +35,7 @@ echo_server       | 172.19.0.1:45314 | websocket: close 1005 (no status)
 
 ```
 
-Not working (through gravitee):
+== Not working (through gravitee):
 
 ```
 wscat -c ws://localhost:8082/test/services/stomp/ -H "Host: localhost:8082" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg=="
@@ -55,10 +54,9 @@ echo_server       | 172.19.0.3:55618 | upgraded to websocket
 echo_server       | 172.19.0.3:55618 | websocket: close 1000 (normal)
 ```
 
-h1. Testing with flows
+== Testing with flows
 
 - add transform headers to request (example in test-v1-added-headers.json), Added_header: test
--
 
 Make curl (http):
 
@@ -67,6 +65,7 @@ Make curl (http):
 ```
 
 Output:
+
 - both Providede_header (from request) and Added_header (from transform headers) work
 
 ```
@@ -88,6 +87,7 @@ wscat -c ws://localhost:8082/test/services/stomp/ -H "Host: localhost:8082" -H "
 ```
 
 Output:
+
 - not a single provided header except websocket headers work (not even from transform headers)
 
 ```
