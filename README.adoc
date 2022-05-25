@@ -8,14 +8,96 @@ cd apim3/3.x
 docker-compose up -d
 ```
 
+In a different console, check echo-server logs:
+
+```
+docker-compose logs -f echo-server
+```
+
 Working (directly):
 
 ```
 wscat -c ws://localhost:10000/test/services/stomp/ -H "Host: localhost:10000" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg=="
 ```
 
+Output:
+```
+echo_server       | Echo server listening on port 10000.
+echo_server       | --------  172.19.0.1:45314 | GET /test/services/stomp/
+echo_server       | Headers
+echo_server       | "Authorization" : ["Basic dGVzdDp0ZXN0Cg=="]
+echo_server       | "Sec-Websocket-Extensions" : ["permessage-deflate; client_max_window_bits"]
+echo_server       | "Sec-Websocket-Version" : ["13"]
+echo_server       | "Sec-Websocket-Key" : ["qH2PMOt+kMyZMHtAU9X7sA=="]
+echo_server       | "Connection" : ["Upgrade"]
+echo_server       | "Upgrade" : ["websocket"]
+echo_server       | 172.19.0.1:45314 | upgraded to websocket
+echo_server       | 172.19.0.1:45314 | websocket: close 1005 (no status)
+
+```
+
 Not working (through gravitee):
 
 ```
 wscat -c ws://localhost:8082/test/services/stomp/ -H "Host: localhost:8082" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg=="
+```
+
+Output:
+```
+echo_server       | --------  172.19.0.3:55618 | GET /services/stomp/
+echo_server       | Headers
+echo_server       | "Origin" : ["http://echo-server:10000"]
+echo_server       | "Sec-Websocket-Version" : ["13"]
+echo_server       | "Upgrade" : ["websocket"]
+echo_server       | "Connection" : ["upgrade"]
+echo_server       | "Sec-Websocket-Key" : ["BmYtMT9mndpITCOFC9eLxA=="]
+echo_server       | 172.19.0.3:55618 | upgraded to websocket
+echo_server       | 172.19.0.3:55618 | websocket: close 1000 (normal)
+```
+
+h1. Testing with flows
+
+- add transform headers to request (example in test-v1-added-headers.json), Added_header: test
+-
+
+Make curl (http):
+
+```
+ curl -H "Provided_header: test" http://localhost:8082/test/any
+```
+
+Output:
+- both Providede_header (from request) and Added_header (from transform headers) work
+
+```
+echo_server       | --------  172.19.0.3:58282 | GET /any
+echo_server       | Headers
+echo_server       | "Accept" : ["*/*"]
+echo_server       | "Provided_header" : ["test"]
+echo_server       | "X-Gravitee-Transaction-Id" : ["fe027f2c-413d-40e0-827f-2c413d80e036"]
+echo_server       | "X-Gravitee-Request-Id" : ["fe027f2c-413d-40e0-827f-2c413d80e036"]
+echo_server       | "Added_header" : ["test"]
+echo_server       | "Accept-Encoding" : ["deflate, gzip"]
+echo_server       | "User-Agent" : ["curl/7.58.0"]
+```
+
+Use wscat (websocket):
+
+```
+wscat -c ws://localhost:8082/test/services/stomp/ -H "Host: localhost:8082" -H "Sec-WebSocket-Version: 13" -H "Upgrade: websocket" -H "Authorization: Basic dGVzdDp0ZXN0Cg==" -H "Provided_header: test"
+```
+
+Output:
+- not a single provided header except websocket headers work (not even from transform headers)
+
+```
+echo_server       | --------  172.19.0.3:58356 | GET /services/stomp/
+echo_server       | Headers
+echo_server       | "Sec-Websocket-Key" : ["PkGDKBB1IbuOl87bT993Cw=="]
+echo_server       | "Origin" : ["http://echo-server:10000"]
+echo_server       | "Sec-Websocket-Version" : ["13"]
+echo_server       | "Upgrade" : ["websocket"]
+echo_server       | "Connection" : ["upgrade"]
+echo_server       | 172.19.0.3:58356 | upgraded to websocket
+
 ```

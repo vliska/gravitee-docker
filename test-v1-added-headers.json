@@ -1,0 +1,112 @@
+{
+  "name": "test",
+  "crossId": "298255e5-3f07-49ef-8255-e53f0799ef39",
+  "version": "v1",
+  "description": "test",
+  "visibility": "PUBLIC",
+  "gravitee": "2.0.0",
+  "flow_mode": "DEFAULT",
+  "resources": [],
+  "properties": [],
+  "plans": [
+    {
+      "id": "89aab84e-a064-35cc-9f05-6b6ba5e45159",
+      "crossId": "05da4118-0838-49ad-9a41-18083839ada9",
+      "name": "free",
+      "description": "test",
+      "validation": "AUTO",
+      "security": "KEY_LESS",
+      "type": "API",
+      "status": "PUBLISHED",
+      "api": "7ecdc774-8246-370f-b04b-4c1f09365a5f",
+      "order": 0,
+      "characteristics": [],
+      "created_at": 1653458119631,
+      "updated_at": 1653458119631,
+      "published_at": 1653458119632,
+      "paths": {},
+      "flows": [
+        {
+          "name": "",
+          "path-operator": {
+            "path": "/",
+            "operator": "STARTS_WITH"
+          },
+          "condition": "",
+          "consumers": [],
+          "methods": [],
+          "pre": [
+            {
+              "name": "Transform Headers",
+              "description": "",
+              "enabled": true,
+              "policy": "transform-headers",
+              "configuration": {
+                "addHeaders": [
+                  {
+                    "name": "ADDED_HEADER",
+                    "value": "test"
+                  }
+                ],
+                "scope": "REQUEST"
+              }
+            }
+          ],
+          "post": [],
+          "enabled": true
+        }
+      ],
+      "comment_required": false
+    }
+  ],
+  "id": "7ecdc774-8246-370f-b04b-4c1f09365a5f",
+  "path_mappings": [],
+  "proxy": {
+    "virtual_hosts": [
+      {
+        "path": "/test"
+      }
+    ],
+    "strip_context_path": false,
+    "preserve_host": false,
+    "logging": {
+      "mode": "CLIENT_PROXY",
+      "content": "HEADERS_PAYLOADS",
+      "scope": "REQUEST_RESPONSE"
+    },
+    "groups": [
+      {
+        "name": "default-group",
+        "endpoints": [
+          {
+            "backup": false,
+            "inherit": true,
+            "name": "default",
+            "weight": 1,
+            "type": "http",
+            "target": "http://echo-server:10000"
+          }
+        ],
+        "load_balancing": {
+          "type": "ROUND_ROBIN"
+        },
+        "http": {
+          "connectTimeout": 5000,
+          "idleTimeout": 60000,
+          "keepAlive": true,
+          "readTimeout": 10000,
+          "pipelining": false,
+          "maxConcurrentConnections": 100,
+          "useCompression": true,
+          "followRedirects": false
+        }
+      }
+    ]
+  },
+  "response_templates": {},
+  "primaryOwner": {
+    "id": "a544e17c-a359-4154-84e1-7ca359f15427",
+    "displayName": "admin",
+    "type": "USER"
+  }
+}
